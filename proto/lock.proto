@@ -1,0 +1,61 @@
+syntax = "proto3";
+package lockservice;
+
+option go_package = "./proto";
+
+service LockService {
+  rpc Init(InitRequest) returns (InitResponse) {}
+  rpc LockAcquire(LockAcquireRequest) returns (LockAcquireResponse) {}
+  rpc LockRelease(LockReleaseRequest) returns (LockReleaseResponse) {}
+  rpc AppendFile(AppendFileRequest) returns (AppendFileResponse) {}
+  rpc Close(CloseRequest) returns (CloseResponse) {}
+}
+
+message InitRequest {
+  string client_id = 1;
+}
+
+message InitResponse {
+  string message = 1;
+  int32 return_code = 2;
+}
+
+message LockAcquireRequest {
+  string client_id = 1;
+  string lock_name = 2;
+}
+
+message LockAcquireResponse {
+  int32 return_code = 1;
+  string message = 2;
+}
+
+message LockReleaseRequest {
+  string client_id = 1;
+  string lock_name = 2;
+}
+
+message LockReleaseResponse {
+  int32 return_code = 1;
+  string message = 2;
+}
+
+message AppendFileRequest {
+  string client_id = 1;
+  string file_name = 2;
+  string data = 3;
+}
+
+message AppendFileResponse {
+  int32 return_code = 1;
+  string message = 2;
+}
+
+message CloseRequest {
+  string client_id = 1;
+}
+
+message CloseResponse {
+  string message = 1;
+  int32 return_code = 2;
+}
