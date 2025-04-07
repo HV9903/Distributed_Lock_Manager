@@ -13,6 +13,7 @@ service LockService {
 
 message InitRequest {
   string client_id = 1;
+  string request_id = 2;
 }
 
 message InitResponse {
@@ -23,16 +24,20 @@ message InitResponse {
 message LockAcquireRequest {
   string client_id = 1;
   string lock_name = 2;
+  string request_id = 3;
 }
 
 message LockAcquireResponse {
   int32 return_code = 1;
   string message = 2;
+  int64 fencing_token = 3;
 }
 
 message LockReleaseRequest {
   string client_id = 1;
   string lock_name = 2;
+  string request_id = 3;
+  int64 fencing_token = 4;
 }
 
 message LockReleaseResponse {
@@ -44,6 +49,8 @@ message AppendFileRequest {
   string client_id = 1;
   string file_name = 2;
   string data = 3;
+  string request_id = 4;
+  int64 fencing_token = 5;
 }
 
 message AppendFileResponse {
@@ -53,6 +60,7 @@ message AppendFileResponse {
 
 message CloseRequest {
   string client_id = 1;
+  string request_id = 2;
 }
 
 message CloseResponse {

@@ -24,6 +24,7 @@ const (
 type InitRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,6 +62,13 @@ func (*InitRequest) Descriptor() ([]byte, []int) {
 func (x *InitRequest) GetClientId() string {
 	if x != nil {
 		return x.ClientId
+	}
+	return ""
+}
+
+func (x *InitRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
 	}
 	return ""
 }
@@ -121,6 +129,7 @@ type LockAcquireRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	LockName      string                 `protobuf:"bytes,2,opt,name=lock_name,json=lockName,proto3" json:"lock_name,omitempty"`
+	RequestId     string                 `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -169,10 +178,18 @@ func (x *LockAcquireRequest) GetLockName() string {
 	return ""
 }
 
+func (x *LockAcquireRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
 type LockAcquireResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ReturnCode    int32                  `protobuf:"varint,1,opt,name=return_code,json=returnCode,proto3" json:"return_code,omitempty"`
 	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	FencingToken  int64                  `protobuf:"varint,3,opt,name=fencing_token,json=fencingToken,proto3" json:"fencing_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -221,10 +238,19 @@ func (x *LockAcquireResponse) GetMessage() string {
 	return ""
 }
 
+func (x *LockAcquireResponse) GetFencingToken() int64 {
+	if x != nil {
+		return x.FencingToken
+	}
+	return 0
+}
+
 type LockReleaseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	LockName      string                 `protobuf:"bytes,2,opt,name=lock_name,json=lockName,proto3" json:"lock_name,omitempty"`
+	RequestId     string                 `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	FencingToken  int64                  `protobuf:"varint,4,opt,name=fencing_token,json=fencingToken,proto3" json:"fencing_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -271,6 +297,20 @@ func (x *LockReleaseRequest) GetLockName() string {
 		return x.LockName
 	}
 	return ""
+}
+
+func (x *LockReleaseRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *LockReleaseRequest) GetFencingToken() int64 {
+	if x != nil {
+		return x.FencingToken
+	}
+	return 0
 }
 
 type LockReleaseResponse struct {
@@ -330,6 +370,8 @@ type AppendFileRequest struct {
 	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	FileName      string                 `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
 	Data          string                 `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	FencingToken  int64                  `protobuf:"varint,5,opt,name=fencing_token,json=fencingToken,proto3" json:"fencing_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -383,6 +425,20 @@ func (x *AppendFileRequest) GetData() string {
 		return x.Data
 	}
 	return ""
+}
+
+func (x *AppendFileRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *AppendFileRequest) GetFencingToken() int64 {
+	if x != nil {
+		return x.FencingToken
+	}
+	return 0
 }
 
 type AppendFileResponse struct {
@@ -440,6 +496,7 @@ func (x *AppendFileResponse) GetMessage() string {
 type CloseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClientId      string                 `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -477,6 +534,13 @@ func (*CloseRequest) Descriptor() ([]byte, []int) {
 func (x *CloseRequest) GetClientId() string {
 	if x != nil {
 		return x.ClientId
+	}
+	return ""
+}
+
+func (x *CloseRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
 	}
 	return ""
 }
@@ -537,37 +601,50 @@ var File_proto_lock_proto protoreflect.FileDescriptor
 
 const file_proto_lock_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/lock.proto\x12\vlockservice\"*\n" +
+	"\x10proto/lock.proto\x12\vlockservice\"I\n" +
 	"\vInitRequest\x12\x1b\n" +
-	"\tclient_id\x18\x01 \x01(\tR\bclientId\"I\n" +
+	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\"I\n" +
 	"\fInitResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12\x1f\n" +
 	"\vreturn_code\x18\x02 \x01(\x05R\n" +
-	"returnCode\"N\n" +
+	"returnCode\"m\n" +
 	"\x12LockAcquireRequest\x12\x1b\n" +
 	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x1b\n" +
-	"\tlock_name\x18\x02 \x01(\tR\blockName\"P\n" +
+	"\tlock_name\x18\x02 \x01(\tR\blockName\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x03 \x01(\tR\trequestId\"u\n" +
 	"\x13LockAcquireResponse\x12\x1f\n" +
 	"\vreturn_code\x18\x01 \x01(\x05R\n" +
 	"returnCode\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"N\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12#\n" +
+	"\rfencing_token\x18\x03 \x01(\x03R\ffencingToken\"\x92\x01\n" +
 	"\x12LockReleaseRequest\x12\x1b\n" +
 	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x1b\n" +
-	"\tlock_name\x18\x02 \x01(\tR\blockName\"P\n" +
+	"\tlock_name\x18\x02 \x01(\tR\blockName\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x03 \x01(\tR\trequestId\x12#\n" +
+	"\rfencing_token\x18\x04 \x01(\x03R\ffencingToken\"P\n" +
 	"\x13LockReleaseResponse\x12\x1f\n" +
 	"\vreturn_code\x18\x01 \x01(\x05R\n" +
 	"returnCode\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"a\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xa5\x01\n" +
 	"\x11AppendFileRequest\x12\x1b\n" +
 	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12\x12\n" +
-	"\x04data\x18\x03 \x01(\tR\x04data\"O\n" +
+	"\x04data\x18\x03 \x01(\tR\x04data\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\x12#\n" +
+	"\rfencing_token\x18\x05 \x01(\x03R\ffencingToken\"O\n" +
 	"\x12AppendFileResponse\x12\x1f\n" +
 	"\vreturn_code\x18\x01 \x01(\x05R\n" +
 	"returnCode\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"+\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"J\n" +
 	"\fCloseRequest\x12\x1b\n" +
-	"\tclient_id\x18\x01 \x01(\tR\bclientId\"J\n" +
+	"\tclient_id\x18\x01 \x01(\tR\bclientId\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x02 \x01(\tR\trequestId\"J\n" +
 	"\rCloseResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12\x1f\n" +
 	"\vreturn_code\x18\x02 \x01(\x05R\n" +
